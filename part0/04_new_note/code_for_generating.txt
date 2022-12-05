@@ -1,29 +1,30 @@
 note over browser:
+User inputed the text
 User clicked the button
 end note
 
-browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
 
 note over server:
 Server adds the new note to the notes array
 end note
 
-server-->browser: Status Code 302
+server-->browser: Status Code 302: Location: /notes
 
 note over browser:
 Redirect to Location: /notes
 end note
 
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
-server-->browser: HTML page for /notes
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
 
 note over browser:
-Page reloads, browser parses the HTML code and requests for files (main.css and main.js)
+Links in the HTML code cause the browser to also fetch main.css and main.js
 end note
 
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
 server-->browser: main.css
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
 server-->browser: main.js
 
 note over browser:
@@ -35,5 +36,6 @@ server-->browser: [{content: "HTML is easy", date: "2019-05-23T17:30:31.098Z"},â
 
 
 note over browser:
-browser executes the event handler that renders notes to display
+the browser executes an event handler
+which renders the notes to the page using the DOM-API
 end note

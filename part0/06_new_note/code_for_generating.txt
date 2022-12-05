@@ -1,18 +1,18 @@
 note over browser:
+User inputs the text
 User clicks the button
 end note
 
 note over browser:
-Browser gets the data from the DOM element and updates the DOM with the new note
+Browser gets the data from the DOM element
+Browser adds the new node to the note list
+Browser updates the DOM with the new note
 end note
 
 note over browser:
 Browser sends the new node to the server
 end note
-browser->server: HTTP post https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
 
-note over server:
-Server adds the new node to the note list
-end note
 
 server-->browser: HTTP State code 201
