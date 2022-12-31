@@ -11,8 +11,13 @@ const requestLogger = (request, response, next) => {
 app.use(requestLogger)
 
 
+
 var morgan = require('morgan')
-app.use(morgan('combined'))
+morgan.token("body", function (req) {
+    return JSON.stringify(req.body)
+  })
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body')) // payload is also fine
+// app.use(morgan('combined'))
 
 const PORT = 3001
 app.listen(PORT, () => {
