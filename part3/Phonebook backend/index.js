@@ -57,6 +57,18 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
+app.post('/api/persons', (request, response) => {
+    const randomId = Math.floor(Math.random() * 10000)
+  
+    const note = request.body
+    note.id = randomId
+  
+    notes = notes.concat(note)
+  
+    response.json(note)
+  })
+
+
 // app.get('/', (request, response) => {
 //   response.send('<h1>Hello World!</h1>')
 // })
