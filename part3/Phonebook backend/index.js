@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-
 app.use(express.json())
 
 let notes = 
@@ -30,6 +29,13 @@ let notes =
 app.get('/api/peoples', (request, response) => {
     response.json(notes)
 })
+
+app.get('/info', (request, response) => {
+    const date=new Date()
+    const requestTime = new Date(Date.now())
+      response.send(`<p>Phonebook has info for ${notes.length} people. </p> <p> ${requestTime}.</p> `);
+})
+
 
 // app.get('/', (request, response) => {
 //   response.send('<h1>Hello World!</h1>')
