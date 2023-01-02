@@ -114,6 +114,20 @@ app.delete('/api/peoples/:id', (request, response,next) => {
     });
 })
 
+app.put('/api/peoples/:id', (request, response, next) => {
+    const body = request.body
+  
+    const people = {
+      name: body.name,
+      number: body.number,
+    } 
+  
+    People.findByIdAndUpdate(request.params.id, people, { new: true }) //if true, return the modified document rather than the original
+      .then(updatedPeople => {
+        response.json(updatedPeople)
+      })
+      .catch(error => next(error))
+  })
 
 
   
