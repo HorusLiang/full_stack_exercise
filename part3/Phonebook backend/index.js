@@ -71,7 +71,7 @@ app.get('/getall', (request, response) => {
 
 
 
-app.get('/api/peoples/:id', (request, response) => {
+app.get('/api/peoples/:id', (request, response,next) => {
     const id = request.params.id
 
     People.findById(id).then((result)=>{
@@ -83,12 +83,11 @@ app.get('/api/peoples/:id', (request, response) => {
             
         })
     .catch((error)=>{
-        console.error(error)
-        response.status(400).send({error:'malformatted id'})
+        next(error)
     })
 })
 
-app.get('/api/peoples', (request, response) => {
+app.get('/api/peoples', (request, response,next) => {
 
     People.find({}).then((result)=>{
             if(result){
@@ -99,12 +98,12 @@ app.get('/api/peoples', (request, response) => {
             
         })
     .catch((error)=>{
-        console.error(error)
+        next(error)
     })
 })
 
 
-app.delete('/api/peoples/:id', (request, response) => {
+app.delete('/api/peoples/:id', (request, response,next) => {
     const id = request.params.id
     People.findByIdAndRemove(id)
      .then((deletedPerson) => {
@@ -124,3 +123,12 @@ const unknownEndpoint = (request, response) => {
   }
   
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    } 
+    next(error)
+}
+app.use(errorHandler)
