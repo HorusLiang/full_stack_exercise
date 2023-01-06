@@ -29,7 +29,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
 
-app.post('/api/peoples', (request, response) => {
+app.post('/api/peoples', (request, response,next) => {
     const body = request.body
  
     if (!body.name || !body.number) {
@@ -41,10 +41,20 @@ app.post('/api/peoples', (request, response) => {
       name: body.name,
       number: body.number,
     })
-  
-    people.save().then(savedPeople => {
-      response.json(savedPeople)
+
+
+    People.find({ name: people.name }).then(existingPersons => {
+        if (existingPersons.length > 0) {
+          return response.status(409).json({
+            error: 'Name already exists in phonebook'
+          })
+        }
+        people.save().then(savedPeople => {
+            return response.json(savedPeople)
+          }).catch((error)=>next(error))
     })
+
+    
   })
 
 
@@ -122,7 +132,7 @@ app.put('/api/peoples/:id', (request, response, next) => {
       number: body.number,
     } 
   
-    People.findByIdAndUpdate(request.params.id, people, { new: true }) //if true, return the modified document rather than the original
+    People.findByIdAndUpdate(request.params.id, people, { new: true,runValidators:true,context:'query' }) //if true, return the modified document rather than the original
       .then(updatedPeople => {
         response.json(updatedPeople)
       })
@@ -130,7 +140,7 @@ app.put('/api/peoples/:id', (request, response, next) => {
   })
 
 
-  
+
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
@@ -138,11 +148,15 @@ const unknownEndpoint = (request, response) => {
   
 app.use(unknownEndpoint)
 
+
+
 const errorHandler = (error, request, response, next) => {
     console.error(error.message)
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id' })
-    } 
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
+      }
     next(error)
 }
 app.use(errorHandler)

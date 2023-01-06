@@ -12,8 +12,15 @@ const url = `mongodb+srv://horusliang:${password}@cluster0.fvncjns.mongodb.net/n
 
 
 const peopleSchema = new mongoose.Schema({
-  name: String,
-  number:String,
+  name: {
+    type:String,
+    minLength:5,
+    required:true
+  },
+  number:{
+    type:String,
+    required:true
+  }
 })
 
 
