@@ -103,7 +103,7 @@ const blogsInDb = async () => {
     return blogs.map(blog => blog.toJSON())
   }
 
-test("delete is successful.",async()=>{
+test("delete is successful or not.",async()=>{
 
     const blogAtStart= await blogsInDb()
     const lengthStart=blogAtStart.length
@@ -120,4 +120,27 @@ test("delete is successful.",async()=>{
     )
     expect(blogAtEnd).not.toContain(blogToDelete)
     
+})
+
+test("update is successful or not.",async()=>{
+
+    const blogAtStart= await blogsInDb()
+    const lengthStart=blogAtStart.length
+
+    const blogToUpdate=blogAtStart[0]
+    blogToUpdate.likes=blogToUpdate.likes+1
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(blogToUpdate)
+      .expect(200)
+
+    const blogAtEnd= await blogsInDb()
+    const blogUpdated=blogAtEnd[0]
+
+    expect(blogAtEnd).toHaveLength(
+        lengthStart
+    )
+
+    expect(blogUpdated.likes).toBe(blogToUpdate.likes)
 })
