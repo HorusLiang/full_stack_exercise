@@ -45,3 +45,22 @@ test("verifies identifier property of the blog posts id exists",async()=>{
     const blogPost = await Blog.findOne();
     expect(blogPost.id).toBeDefined();
 })
+
+test("making an HTTP POST request to the /api/blogs URL successfully creates a new blog post",async()=>{
+    const blog={
+        "title":"my tempt blog",
+        "author":"liang",
+        "url":"www.google.cn",
+        "likes":5
+    }
+
+    const response = await api
+      .post('/api/blogs')
+      .send(blog)
+    expect(response.statusCode).toBe(201)
+    const currentBlogCount = await Blog.countDocuments()
+    expect(currentBlogCount).toBe(3)
+
+    expect(response.body.title).toEqual(`my tempt blog`)
+    
+})
