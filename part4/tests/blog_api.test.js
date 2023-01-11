@@ -40,3 +40,8 @@ test('blogs are returned as json', async () => {
   afterAll(() => {
     mongoose.connection.close()
   })
+
+test("verifies identifier property of the blog posts id exists",async()=>{
+    const blogPost = await Blog.findOne();
+    expect(blogPost.id).toBeDefined();
+})
