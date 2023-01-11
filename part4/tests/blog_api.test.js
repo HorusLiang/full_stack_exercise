@@ -97,3 +97,27 @@ test("if the title or url properties are missing from the request data, request 
     expect(response.statusCode).toBe(400)
     
 })
+
+const blogsInDb = async () => {
+    const blogs = await Blog.find({})
+    return blogs.map(blog => blog.toJSON())
+  }
+
+test("delete is successful.",async()=>{
+
+    const blogAtStart= await blogsInDb()
+    const lengthStart=blogAtStart.length
+
+    const blogToDelete=blogAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogAtEnd= await blogsInDb()
+    expect(blogAtEnd).toHaveLength(
+        lengthStart - 1
+    )
+    expect(blogAtEnd).not.toContain(blogToDelete)
+    
+})
