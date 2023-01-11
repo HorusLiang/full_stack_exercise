@@ -83,3 +83,17 @@ test("likes is default to the value 0 if missing",async()=>{
     expect(response.body.likes).toBe(0)
     
 })
+
+test("if the title or url properties are missing from the request data, request with the status code 400 Bad Request.",async()=>{
+    const blog={
+        "title":"my tempt blog",
+        "author":"liang",
+    }
+
+    const response = await api
+      .post('/api/blogs')
+      .send(blog)
+
+    expect(response.statusCode).toBe(400)
+    
+})
