@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
-
+const middleware = require('./utils/middleware')
 
 const cors = require('cors')
 app.use(cors())
@@ -26,5 +26,8 @@ mongoose.connect(config.MONGODB_URI)
 
   const loginRouter = require('./controllers/login')
   app.use('/api/login', loginRouter) 
+
+  app.use(middleware.unknownEndpoint)
+  app.use(middleware.errorHandler)
 
   module.exports = app

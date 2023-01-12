@@ -2,14 +2,23 @@ const blogsRouter = require('express').Router()
 const { request } = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (request, response) => {
     const blogs=await Blog.find({}).populate('user',{username:1,name:1,id:1})
     response.json(blogs)
       
   })
-  
-  blogsRouter.post('/', async (request, response) => {
+
+  const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+      return authorization.substring(7)
+    }
+    return null
+  }
+
+  blogsRouter.post('/', async (request, response,next) => {
     let obj=request.body
     if(!obj.hasOwnProperty("title") || !obj.hasOwnProperty("url")){
       return response.status(400).json({error: 'title and url are required'})
@@ -19,15 +28,26 @@ blogsRouter.get('/', async (request, response) => {
       obj.likes=0
     }
 
-    const user = await User.findOne({});
-    const blog = new Blog(obj)
-    blog.user=user.id
-  
-    result=await blog.save()
+    const body = request.body
+    const token = getTokenFrom(request)
+    try{
+      const decodedToken = jwt.verify(token, process.env.SECRET)
+      if (!decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+      }
+      const user = await User.findById(decodedToken.id)
 
-    await user.blogs.push(result.id)
-    await user.save()
-    response.status(201).json(result)
+      const blog = new Blog(obj)
+      blog.user=user.id
+    
+      result=await blog.save()
+
+      await user.blogs.push(result.id)
+      await user.save()
+      response.status(201).json(result)
+    }catch(err){
+      next(err)
+    }
   })
   blogsRouter.delete('/:id',async (req, res)=>{
     const deletedBlog = await Blog.findByIdAndDelete(req.params.id)
@@ -45,5 +65,6 @@ blogsRouter.get('/', async (request, response) => {
     }
     res.json(updatedBlog)
   })
+  
 
   module.exports = blogsRouter
