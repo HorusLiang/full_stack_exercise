@@ -20,6 +20,8 @@ mongoose.connect(config.MONGODB_URI)
 
   
   const blogsRouter=require("./controllers/blogs")  
-  app.use('/api/blogs', blogsRouter)   
+  const usersRouter = require('./controllers/users')
+  app.use('/api/blogs', blogsRouter)
+  app.use('/api/users', usersRouter) 
 
   module.exports = app
