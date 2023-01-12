@@ -1,16 +1,15 @@
 const blogsRouter = require('express').Router()
 const { request } = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
-blogsRouter.get('/', (request, response) => {
-    Blog
-      .find({})
-      .then(blogs => {
-        response.json(blogs)
-      })
+blogsRouter.get('/', async (request, response) => {
+    const blogs=await Blog.find({}).populate('user',{username:1,name:1,id:1})
+    response.json(blogs)
+      
   })
   
-  blogsRouter.post('/', (request, response) => {
+  blogsRouter.post('/', async (request, response) => {
     let obj=request.body
     if(!obj.hasOwnProperty("title") || !obj.hasOwnProperty("url")){
       return response.status(400).json({error: 'title and url are required'})
@@ -20,13 +19,15 @@ blogsRouter.get('/', (request, response) => {
       obj.likes=0
     }
 
+    const user = await User.findOne({});
     const blog = new Blog(obj)
+    blog.user=user.id
   
-    blog
-      .save()
-      .then(result => {
-        response.status(201).json(result)
-      })
+    result=await blog.save()
+
+    await user.blogs.push(result.id)
+    await user.save()
+    response.status(201).json(result)
   })
   blogsRouter.delete('/:id',async (req, res)=>{
     const deletedBlog = await Blog.findByIdAndDelete(req.params.id)
