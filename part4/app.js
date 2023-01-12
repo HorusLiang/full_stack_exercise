@@ -24,4 +24,7 @@ mongoose.connect(config.MONGODB_URI)
   app.use('/api/blogs', blogsRouter)
   app.use('/api/users', usersRouter) 
 
+  const loginRouter = require('./controllers/login')
+  app.use('/api/login', loginRouter) 
+
   module.exports = app
