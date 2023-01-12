@@ -9,6 +9,7 @@ const cors = require('cors')
 app.use(cors())
 const config = require('./utils/config')
 const logger = require('./utils/logger')
+app.use(middleware.tokenExtractor)
 
 mongoose.connect(config.MONGODB_URI)
   .then(() => {

@@ -22,7 +22,22 @@ const unknownEndpoint = (request, response) => {
   
     next(error)
   }
+  const tokenExtractor = (request, response, next) => {
+    const authorization = request.get('authorization')
+    try {
+        if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+            request.token = authorization.substring(7)
+        }
+        next();
+      } catch (error) {
+        return response.status(401).json({ error: 'invalid token' });
+    }
+};
+  
+    
+
   module.exports = {
     unknownEndpoint,
-    errorHandler
+    errorHandler,
+    tokenExtractor
   }
