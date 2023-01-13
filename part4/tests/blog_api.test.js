@@ -3,23 +3,39 @@ const app = require('../app')
 const api = supertest(app)
 const mongoose = require('mongoose')
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
+let token=""
+const user = new User({username: 'root', password: 'sekret'})
+beforeAll(async () => {
+  await User.deleteMany({})
+  await user.save()
+  const userForToken = {
+    username: user.username,
+    id: user._id,
+  }
+  console.log(user._id.toString())
+  token = jwt.sign(userForToken, process.env.SECRET)
+  
+});
 const initialTestBlogs = [
     {
       'title': 'Burns DAY',
       'author': 'Robert Scalds',
       'url': 'http://burns.gov/blog/woohoo',
       'likes': 9,
-      'id': '5efbc1008d691b6a74cb5991'
+      'user':user._id.toString(),
     },
     {
       'title': 'Burns NIGHT',
       'author': 'Robert Burns',
       'url': 'http://burns.gov/blog/woohaa',
       'likes': 1,
-      'id': '5f0637defbc4d6377999a4d8'
+      'user':user._id.toString(),
     }
   ]
+
   beforeEach(async () => {
     await Blog.deleteMany({})
   
@@ -33,6 +49,8 @@ const initialTestBlogs = [
 test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
@@ -56,6 +74,8 @@ test("making an HTTP POST request to the /api/blogs URL successfully creates a n
 
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
       .send(blog)
     expect(response.statusCode).toBe(201)
     const currentBlogCount = await Blog.countDocuments()
@@ -65,6 +85,7 @@ test("making an HTTP POST request to the /api/blogs URL successfully creates a n
     
 })
 
+// need authentication update to the code
 test("likes is default to the value 0 if missing",async()=>{
     const blog={
         "title":"my tempt blog",
@@ -74,6 +95,8 @@ test("likes is default to the value 0 if missing",async()=>{
 
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
       .send(blog)
 
     expect(response.statusCode).toBe(201)
@@ -82,6 +105,20 @@ test("likes is default to the value 0 if missing",async()=>{
 
     expect(response.body.likes).toBe(0)
     
+})
+test("adding a blog fails if token not provided",async()=>{
+  const blog={
+      "title":"my tempt blog",
+      "author":"liang",
+      "url":"www.google.cn",
+      'likes':1
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .set('Content-Type', 'application/json')
+    .send(blog)
+    .expect(401)
 })
 
 test("if the title or url properties are missing from the request data, request with the status code 400 Bad Request.",async()=>{
@@ -92,11 +129,26 @@ test("if the title or url properties are missing from the request data, request 
 
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
       .send(blog)
 
     expect(response.statusCode).toBe(400)
     
 })
+test('adding a blog fails if token not provided', async () => {
+  const newBlog = {
+      title: 'blog title',
+      author: 'author',
+      url: 'https://blog.com',
+      likes: 1,
+  }
+  await api
+      .post('/api/blogs')
+      .set('Content-Type', 'application/json')
+      .send(newBlog)
+      .expect(401)
+});
 
 const blogsInDb = async () => {
     const blogs = await Blog.find({})
@@ -109,9 +161,10 @@ test("delete is successful or not.",async()=>{
     const lengthStart=blogAtStart.length
 
     const blogToDelete=blogAtStart[0]
-
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
       .expect(204)
 
     const blogAtEnd= await blogsInDb()
@@ -122,6 +175,7 @@ test("delete is successful or not.",async()=>{
     
 })
 
+ // need authentication update to the code
 test("update is successful or not.",async()=>{
 
     const blogAtStart= await blogsInDb()
@@ -132,6 +186,8 @@ test("update is successful or not.",async()=>{
 
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
       .send(blogToUpdate)
       .expect(200)
 
@@ -144,3 +200,5 @@ test("update is successful or not.",async()=>{
 
     expect(blogUpdated.likes).toBe(blogToUpdate.likes)
 })
+
+

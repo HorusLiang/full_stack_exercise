@@ -22,7 +22,7 @@ mongoose.connect(config.MONGODB_URI)
   
   const blogsRouter=require("./controllers/blogs")  
   const usersRouter = require('./controllers/users')
-  app.use('/api/blogs', blogsRouter)
+  app.use('/api/blogs', middleware.userExtractor,blogsRouter)
   app.use('/api/users', usersRouter) 
 
   const loginRouter = require('./controllers/login')

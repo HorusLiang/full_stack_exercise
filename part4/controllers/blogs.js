@@ -3,6 +3,7 @@ const { request } = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+const middleware = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
     const blogs=await Blog.find({}).populate('user',{username:1,name:1,id:1})
@@ -12,7 +13,7 @@ blogsRouter.get('/', async (request, response) => {
 
   
 
-  blogsRouter.post('/', async (request, response,next) => {
+  blogsRouter.post('/',  middleware.userExtractor,async (request, response,next) => {
     let obj=request.body
     if(!obj.hasOwnProperty("title") || !obj.hasOwnProperty("url")){
       return response.status(400).json({error: 'title and url are required'})
@@ -21,29 +22,22 @@ blogsRouter.get('/', async (request, response) => {
     if(!obj.hasOwnProperty("likes")){
       obj.likes=0
     }
-
-    // const body = request.body
-    // const token = getTokenFrom(request)
     try{
-      const decodedToken = jwt.verify(request.token, process.env.SECRET)
-      if (!decodedToken.id) {
-        return response.status(401).json({ error: 'token missing or invalid' })
-      }
-      const user = await User.findById(decodedToken.id)
-
       const blog = new Blog(obj)
-      blog.user=user.id
-    
+      blog.user=request.user
       result=await blog.save()
 
+      const user = await User.findById(blog.user);
       await user.blogs.push(result.id)
       await user.save()
       response.status(201).json(result)
+
     }catch(err){
       next(err)
     }
   })
-  blogsRouter.delete('/:id',async (req, res, next)=>{
+
+  blogsRouter.delete('/:id',middleware.userExtractor,async (req, res, next)=>{
     try{
       const decodedToken = jwt.verify(req.token, process.env.SECRET)
       if (!decodedToken.id) {
@@ -51,7 +45,10 @@ blogsRouter.get('/', async (request, response) => {
       }
 
       const blog = await Blog.findById(req.params.id)
-      if ( blog.user.toString() !== decodedToken.id.toString() ){
+
+      
+      const user = await User.findById(decodedToken.id)
+      if ( blog.user.toString() !== user._id.toString() ){
         return res.status(404).json({error: 'permission denied'})
       }
       const deletedBlog = await Blog.findByIdAndDelete(req.params.id)
