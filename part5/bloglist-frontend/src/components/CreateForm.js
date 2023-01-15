@@ -16,7 +16,7 @@ const CreateForm=(
     return (
       <>
         <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>new note</button>
+          <button onClick={() => setLoginVisible(true)}>create new blog</button>
         </div>
         <div style={showWhenVisible}>
           <form onSubmit={handleCreate}>
