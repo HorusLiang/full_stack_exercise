@@ -23,6 +23,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [loginVisible, setLoginVisible] = useState(false)
   useEffect(() => {
     blogService
       .getAll()
@@ -110,36 +111,54 @@ const App = () => {
       setErrorMessage(null)
     }, 5000)
   }
-  const createNew=()=>{
-    
+  const createNew=(
+    {
+      handleCreate,
+      title,
+      author,
+      url
+    }
+  )=>{
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
     return (
-      <form onSubmit={handleCreate}>
-        <div>
-          title
-            <input
-            type="text"
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-          />
+      <>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}>new note</button>
         </div>
-        <div>
-          author
-            <input
-            type="text"
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-          />
+        <div style={showWhenVisible}>
+          <form onSubmit={handleCreate}>
+            <div>
+              title
+                <input
+                type="text"
+                value={title}
+                onChange={({ target }) => setTitle(target.value)}
+              />
+            </div>
+            <div>
+              author
+                <input
+                type="text"
+                value={author}
+                onChange={({ target }) => setAuthor(target.value)}
+              />
+            </div>
+            <div>
+              url
+                <input
+                type="text"
+                value={url}
+                onChange={({ target }) => setUrl(target.value)}
+              />
+            </div>
+            <button type="submit">create</button>
+            <br/>
+            <button onClick={() => setLoginVisible(false)}>cancel</button>
+          </form>
         </div>
-        <div>
-          url
-            <input
-            type="text"
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-        <button type="submit">create</button>
-      </form>
+      </>
+      
     )
   }
   const logout=()=>{
@@ -156,7 +175,7 @@ const App = () => {
         <div>
           <h2>blogs</h2>
           <p>{user.name} logged in  <button onClick={logout}>Logout</button></p> 
-          {createNew()}
+          {createNew({handleCreate,title,author,url})}
           {blogInfo()}
         </div>
       }
