@@ -20,13 +20,16 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [blogs, setBlogs] = useState([])
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
   useEffect(() => {
     blogService
       .getAll()
       .then(initialBlogs => {
         setBlogs(initialBlogs)
       })
-  }, [])
+  }, [user])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
@@ -85,11 +88,49 @@ const App = () => {
   const blogInfo=()=>{
     return(
       <div>
-        
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
         )}
       </div>
+    )
+  }
+  const handleCreate=()=>{
+    const blog={
+      'title':title,
+      'author':author,
+      'url':url
+    }
+    blogService.createNew(blog)
+  }
+  const createNew=()=>{
+    return (
+      <form onSubmit={handleCreate}>
+        <div>
+          title
+            <input
+            type="text"
+            value={title}
+            onChange={({ target }) => setTitle(target.value)}
+          />
+        </div>
+        <div>
+          author
+            <input
+            type="text"
+            value={author}
+            onChange={({ target }) => setAuthor(target.value)}
+          />
+        </div>
+        <div>
+          url
+            <input
+            type="text"
+            value={url}
+            onChange={({ target }) => setUrl(target.value)}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
     )
   }
   const logout=()=>{
@@ -106,6 +147,7 @@ const App = () => {
         <div>
           <h2>blogs</h2>
           <p>{user.name} logged in  <button onClick={logout}>Logout</button></p> 
+          {createNew()}
           {blogInfo()}
         </div>
       }
