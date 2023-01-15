@@ -5,7 +5,6 @@ import blogService from './services/blogs'
 import Notification from './components/Notification'
 import Blog from './components/Blog'
 import CreateForm from './components/CreateForm'
-import Togglable from './components/Togglable'
 const App = () => {
 
   const [username, setUsername] = useState('') 
@@ -23,7 +22,7 @@ const App = () => {
       .then(initialBlogs => {
         setBlogs(initialBlogs)
       })
-  }, [user,url])
+  }, [user,url,blogs])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
@@ -42,6 +41,7 @@ const App = () => {
         'loggedNoteappUser', JSON.stringify(user)
       ) 
       blogService.setToken(user.token)
+      blogService.setUserId(user.id)
       setUser(user)
       setUsername('')
       setPassword('')

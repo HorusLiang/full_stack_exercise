@@ -1,5 +1,6 @@
 import { useState} from 'react'
-const Blog = ({ blog }) => {
+import blogService from '../services/blogs'
+const Blog = ({ blog,userId }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -14,14 +15,15 @@ const Blog = ({ blog }) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
-  // <div style={hideWhenVisible}>
-  //       <button onClick={toggleVisibility}>{props.buttonLabel}</button>
-  //     </div>
-  //     <div style={showWhenVisible}>
-  //       {props.children}
-  //       <button onClick={toggleVisibility}>cancel</button>
-  //     </div>
-  //   </>
+  const handleLike=(blog)=>{
+    const newBlog={
+      likes:blog.likes+1,
+      author:blog.author,
+      title:blog.title,
+      url:blog.url
+    }
+    blogService.update(blog.id,newBlog)
+  }
   return (
     <div style={blogStyle}>
       <div style={hideWhenVisible}>
@@ -32,7 +34,7 @@ const Blog = ({ blog }) => {
         <br/>
         {blog.url}
         <br/> 
-        likes: {blog.likes} <button>like</button>
+        likes: {blog.likes} <button onClick={()=>handleLike(blog)}>like</button>
       </div>
   </div>
 )}
