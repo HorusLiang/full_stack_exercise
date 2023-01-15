@@ -1,4 +1,4 @@
-import Togglable from '../components/Togglable'
+import { useState} from 'react'
 const Blog = ({ blog }) => {
 
   const blogStyle = {
@@ -8,18 +8,31 @@ const Blog = ({ blog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  //<button>yes</button>
+  const [visible, setVisible] = useState(false)
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
+  // <div style={hideWhenVisible}>
+  //       <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+  //     </div>
+  //     <div style={showWhenVisible}>
+  //       {props.children}
+  //       <button onClick={toggleVisibility}>cancel</button>
+  //     </div>
+  //   </>
   return (
     <div style={blogStyle}>
-      <div>
-          {blog.title} {blog.author} 
-          <Togglable buttonLabel='view'>
-            <div>
-              {blog.url}
-              <br/> 
-              likes: {blog.likes} <button>like</button>
-            </div>
-         </Togglable>
+      <div style={hideWhenVisible}>
+          {blog.title} {blog.author} <button onClick={toggleVisibility}>view</button>
+      </div>
+      <div style={showWhenVisible}>
+        {blog.title} {blog.author} <button onClick={toggleVisibility}>hide</button>
+        <br/>
+        {blog.url}
+        <br/> 
+        likes: {blog.likes} <button>like</button>
       </div>
   </div>
 )}
