@@ -52,7 +52,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -94,15 +94,24 @@ const App = () => {
       </div>
     )
   }
-  const handleCreate=()=>{
+  const handleCreate=(event)=>{
+    event.preventDefault()
     const blog={
       'title':title,
       'author':author,
       'url':url
     }
     blogService.createNew(blog)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    setErrorMessage("a new blog "+blog.title+ "by "+blog.author+" added")
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
   }
   const createNew=()=>{
+    
     return (
       <form onSubmit={handleCreate}>
         <div>
