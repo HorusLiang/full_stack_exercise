@@ -80,9 +80,19 @@ const App = () => {
       
   ) 
   const blogInfo=()=>{
+    const compare = (a, b) => {
+      if (a.likes < b.likes) {
+        return 1;
+      }
+      if (a.likes > b.likes) {
+        return -1;
+      }
+      return 0;
+    }
+    const sortedBlogs = blogs.sort(compare)
     return(
       <div>
-        {blogs.map(blog =>
+        {sortedBlogs.map(blog =>
           {
             return (
               <>
