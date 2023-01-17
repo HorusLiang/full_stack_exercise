@@ -153,7 +153,7 @@ const App = () => {
       <Notification message={errorMessage} />
       {user === null ?
         loginForm() :
-        <div>
+        <div id='app'>
           <h2>blogs</h2>
           <p>{user.name} logged in  <button onClick={logout}>Logout</button></p>
           <CreateForm 
