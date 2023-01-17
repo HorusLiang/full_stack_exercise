@@ -36,7 +36,7 @@ const App = () => {
       })
     }
     
-  }, [user,blogs])
+  }, [blogs, user])
 
   
   const handleLogin = async (event) => {

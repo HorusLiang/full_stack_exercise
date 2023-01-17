@@ -35,15 +35,57 @@ describe('Blog app', function() {
     beforeEach(function() {
       cy.get('#username').type('liang')
       cy.get('#password').type('123456')
-      cy.contains('login').click() 
+      cy.get('button').then( buttons => {
+        console.log('number of buttons', buttons.length)
+        cy.wrap(buttons[0]).click()
+      })
     })
+    // it.only('then example', function() {
+    //   cy.contains("logged in")
+    //   cy.get('button').then( buttons => {
+    //     console.log('number of buttons', buttons.length)
+    //     cy.wrap(buttons[0]).click()
+    //   })
+    // })
 
-    it('A blog can be created', function() {
+    it.only('A blog can be created', function() {
+      cy.contains("logged in")
       cy.contains('create new blog').click()
       cy.get('.title').type('my blog one')
       cy.get('.author').type('this is me:liang')
       cy.get('.url').type('www.baidu.com')
-      cy.get('#create').click() 
+      cy.contains("create")
+      cy.get('#create').then(($create) => {
+        cy.wrap($create).click()
+      })
+      cy.contains('my blog one')
+      
+    })
+    it.only('A blog can be liked', function() {
+        cy.contains("logged in")
+        cy.contains('create new blog').click()
+        cy.get('.title').type('my blog one')
+        cy.get('.author').type('this is me:liang')
+        cy.get('.url').type('www.baidu.com')
+        cy.contains("create")
+        cy.get('#create').then(($create) => {
+          cy.wrap($create).click()
+        })
+        cy.visit('http://localhost:3000').then(()=>{
+          cy.wait(1000)
+        })
+        cy.visit('http://localhost:3000').then(()=>{
+          cy.wait(1000)
+        })
+        cy.get('#view').should('be.visible').contains('view').then(($view) => {
+            cy.wait(1000)
+            $view.click()
+          })
+        cy.get('#likes').should('have.text', 'likes: 0')
+        cy.get('#like').click()
+        cy.get('#likes').should('have.text', 'likes: 1') 
+      })
+      
+
     })
   })
-})

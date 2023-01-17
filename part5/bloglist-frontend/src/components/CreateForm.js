@@ -14,7 +14,7 @@ const CreateForm=(
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
     const addNewBlog = (event) => {
-      event.preventDefault()
+      // event.preventDefault()
       handleCreate({
         title,
         author,
@@ -29,7 +29,7 @@ const CreateForm=(
         <div style={hideWhenVisible} className="hide">
           <button onClick={() => setLoginVisible(true)}>create new blog</button>
         </div>
-        <div style={showWhenVisible} className='view'>
+        <div style={showWhenVisible} id='viewInfo'>
           <form onSubmit={addNewBlog} className="newBlogForm">
             <div>
               title
