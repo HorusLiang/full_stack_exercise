@@ -29,6 +29,8 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
+      blogService.setUserId(user.id)
+      blogService.setName(user.name)
     }
   }, [])
   const handleLogin = async (event) => {
@@ -42,6 +44,7 @@ const App = () => {
       ) 
       blogService.setToken(user.token)
       blogService.setUserId(user.id)
+      blogService.setName(user.name)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -78,7 +81,17 @@ const App = () => {
       </form>
     </>
       
-  ) 
+  )
+  const handleLike=(blog)=>{
+    const newBlog={
+      likes:blog.likes+1,
+      author:blog.author,
+      title:blog.title,
+      url:blog.url,
+      user:blog.user.id
+    }
+    blogService.update(blog.id,newBlog)
+  } 
   const blogInfo=()=>{
     const compare = (a, b) => {
       if (a.likes < b.likes) {
@@ -96,7 +109,7 @@ const App = () => {
           {
             return (
               <>
-                <Blog key={blog.id} blog={blog} />
+                <Blog key={blog.id} blog={blog} userId={user.id} name={user.name} handleLike={handleLike}/>
               </>
               )
           }
