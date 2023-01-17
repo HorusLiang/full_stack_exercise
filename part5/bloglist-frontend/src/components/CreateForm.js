@@ -1,4 +1,6 @@
 import { useState } from 'react' 
+import PropTypes from 'prop-types'
+
 const CreateForm=(
     {
       handleCreate,
@@ -52,5 +54,13 @@ const CreateForm=(
         </div>
       </>
     )
+  }
+  CreateForm.propTypes = {
+    handleCreate: PropTypes.func.isRequired,
+    handleTitleChange: PropTypes.func.isRequired,
+    handleAuthorChange: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired
   }
   export default CreateForm
