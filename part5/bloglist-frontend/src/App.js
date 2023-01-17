@@ -16,13 +16,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   
-  useEffect(() => {
-    blogService
-      .getAll()
-      .then(initialBlogs => {
-        setBlogs(initialBlogs)
-      })
-  }, [user,url,blogs])
+  
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
@@ -33,6 +27,18 @@ const App = () => {
       blogService.setName(user.name)
     }
   }, [])
+  useEffect(() => {
+    if(user){
+      blogService
+      .getAll()
+      .then(initialBlogs => {
+        setBlogs(initialBlogs)
+      })
+    }
+    
+  }, [user,url,blogs])
+
+  
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -64,7 +70,7 @@ const App = () => {
             <input
             type="text"
             value={username}
-            name="Username"
+            id="username"
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
@@ -73,7 +79,7 @@ const App = () => {
             <input
             type="password"
             value={password}
-            name="Password"
+            id="password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
