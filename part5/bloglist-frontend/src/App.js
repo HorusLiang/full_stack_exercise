@@ -109,10 +109,10 @@ const App = () => {
           {
             return (
               <>
-                <Blog key={blog.id} blog={blog} userId={user.id} name={user.name} handleLike={handleLike}/>
+                <Blog key={blog.id} blog={blog}  name={user.name} handleLike={handleLike}/>
               </>
               )
-          }
+        }
         )}
       </div>
     )

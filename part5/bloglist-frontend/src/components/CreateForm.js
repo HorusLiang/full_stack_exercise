@@ -48,7 +48,7 @@ const CreateForm=(
             </div>
             <button type="submit">create</button>
             <br/>
-            <button onClick={() => setLoginVisible(false)} type='button'>cancel</button> 
+            <button onClick={() => setLoginVisible(false)} type='button'>cancel</button>
             {/* if don't assign type value, then default will call handleCreate */}
           </form>
         </div>

@@ -1,6 +1,6 @@
 import { useState} from 'react'
 import blogService from '../services/blogs'
-const Blog = ({ blog,userId, name,handleLike}) => {
+const Blog = ({ blog, name,handleLike}) => {
 
   const blogStyle = {
     paddingTop: 10,

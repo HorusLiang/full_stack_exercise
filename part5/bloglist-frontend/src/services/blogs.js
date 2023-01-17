@@ -3,6 +3,7 @@ const baseUrl = 'http://localhost:3004/api/blogs'
 
 let token = null
 let userId=null
+// eslint-disable-next-line no-unused-vars
 let name=null
 const setToken = newToken => {
   token = `bearer ${newToken}`
@@ -34,7 +35,6 @@ const update = (id, blog) => {
     headers: { 'Authorization': token, 'Content-Type': 'application/json' },
   }
   // blog.user=userId
-  console.log("---",blog)
   const request = axios.put(`${ baseUrl }/${id}`, blog,config)
   return request.then(response => response.data)
 }
@@ -47,4 +47,5 @@ const deleteBlog=(id)=>{
 }
 
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll,setToken,createNew,update,setUserId,setName,deleteBlog }
