@@ -36,7 +36,7 @@ const App = () => {
       })
     }
     
-  }, [user,url,blogs])
+  }, [user,blogs])
 
   
   const handleLogin = async (event) => {
@@ -131,6 +131,7 @@ const App = () => {
       'url':blogObject.url
     }
     await blogService.createNew(blog)
+    setBlogs(blogs.concat(blog))
     setTitle('')
     setAuthor('')
     setUrl('')

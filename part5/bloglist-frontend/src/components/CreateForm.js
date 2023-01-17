@@ -61,7 +61,7 @@ const CreateForm=(
                 onChange={({ target }) => setUrl(target.value)}
               />
             </div>
-            <button type="submit">create</button>
+            <button type="submit" id='create'>create</button>
             <br/>
             <button onClick={() => setLoginVisible(false)} type='button'>cancel</button>
             {/* if don't assign type value, then default will call handleCreate */}

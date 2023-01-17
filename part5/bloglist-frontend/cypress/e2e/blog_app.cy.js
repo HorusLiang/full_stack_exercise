@@ -30,4 +30,20 @@ describe('Blog app', function() {
       cy.contains("Wrong username or password").should("have.css", "background-color", "rgb(255, 0, 0)")  
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type('liang')
+      cy.get('#password').type('123456')
+      cy.contains('login').click() 
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('create new blog').click()
+      cy.get('.title').type('my blog one')
+      cy.get('.author').type('this is me:liang')
+      cy.get('.url').type('www.baidu.com')
+      cy.get('#create').click() 
+    })
+  })
 })
