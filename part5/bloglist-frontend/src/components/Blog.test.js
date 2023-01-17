@@ -70,3 +70,4 @@ test('like button click calls event handler twice', async() => {
     await user.click(button)
     expect(mockHandler.mock.calls.length).toBe(2)
 })
+

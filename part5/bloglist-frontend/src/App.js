@@ -117,12 +117,12 @@ const App = () => {
       </div>
     )
   }
-  const handleCreate= async (event)=>{
-    event.preventDefault()
+  const handleCreate= async (blogObject)=>{
+    console.log(blogObject)
     const blog={
-      'title':title,
-      'author':author,
-      'url':url
+      'title':blogObject.title,
+      'author':blogObject.author,
+      'url':blogObject.url
     }
     await blogService.createNew(blog)
     setTitle('')
@@ -151,9 +151,6 @@ const App = () => {
           <p>{user.name} logged in  <button onClick={logout}>Logout</button></p>
           <CreateForm 
             handleCreate={handleCreate}
-            handleTitleChange={({ target }) => setTitle(target.value)}
-            handleAuthorChange={({ target }) => setAuthor(target.value)}
-            handleUrlChange={({ target }) => setUrl(target.value)}
             title={title}
             author={author}
             url={url}

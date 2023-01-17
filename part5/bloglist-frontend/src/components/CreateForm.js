@@ -4,46 +4,61 @@ import PropTypes from 'prop-types'
 const CreateForm=(
     {
       handleCreate,
-      handleTitleChange,
-      handleAuthorChange,
-      handleUrlChange,
-      title,
-      author,
-      url
     }
   )=>{
     const [loginVisible, setLoginVisible] = useState(false)
     const hideWhenVisible = { display: loginVisible ? 'none' : '' }
     const showWhenVisible = { display: loginVisible ? '' : 'none' }
+
+    const [title, setTitle] = useState('')
+    const [author, setAuthor] = useState('')
+    const [url, setUrl] = useState('')
+    const addNewBlog = (event) => {
+      event.preventDefault()
+      handleCreate({
+        title,
+        author,
+        url,
+      })
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+    }
     return (
       <>
-        <div style={hideWhenVisible}>
+        <div style={hideWhenVisible} className="hide">
           <button onClick={() => setLoginVisible(true)}>create new blog</button>
         </div>
-        <div style={showWhenVisible}>
-          <form onSubmit={handleCreate}>
+        <div style={showWhenVisible} className='view'>
+          <form onSubmit={addNewBlog} className="newBlogForm">
             <div>
               title
                 <input
                 type="text"
+                className='title'
                 value={title}
-                onChange={handleTitleChange}
+                placeholder='write title here'
+                onChange={({ target }) => setTitle(target.value)}
               />
             </div>
             <div>
               author
                 <input
+                className='author'
                 type="text"
                 value={author}
-                onChange={handleAuthorChange}
+                placeholder='write author here'
+                onChange={({ target }) => setAuthor(target.value)}
               />
             </div>
             <div>
               url
                 <input
                 type="text"
+                className='url'
                 value={url}
-                onChange={handleUrlChange}
+                placeholder='write url here'
+                onChange={({ target }) => setUrl(target.value)}
               />
             </div>
             <button type="submit">create</button>
@@ -57,10 +72,5 @@ const CreateForm=(
   }
   CreateForm.propTypes = {
     handleCreate: PropTypes.func.isRequired,
-    handleTitleChange: PropTypes.func.isRequired,
-    handleAuthorChange: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired
   }
   export default CreateForm
