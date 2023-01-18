@@ -55,7 +55,7 @@ const CreateForm=(
               url
                 <input
                 type="text"
-                className='url'
+                id='url'
                 value={url}
                 placeholder='write url here'
                 onChange={({ target }) => setUrl(target.value)}

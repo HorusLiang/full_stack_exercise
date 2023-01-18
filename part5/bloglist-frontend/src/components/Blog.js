@@ -26,7 +26,7 @@ const Blog = ({ blog, name,handleLike}) => {
     
   return (
     <div style={blogStyle} id='blog' >
-      <div style={hideWhenVisible} className="viewBlog">
+      <div style={hideWhenVisible} className="viewBlog" id='blogItem'>
           <div >{blog.title} {blog.author}</div> <button onClick={toggleVisibility} id='view'>view</button>
       </div>
       <div style={showWhenVisible} clssName="hiddenBLog">

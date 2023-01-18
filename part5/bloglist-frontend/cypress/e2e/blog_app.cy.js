@@ -40,20 +40,47 @@ describe('Blog app', function() {
         cy.wrap(buttons[0]).click()
       })
     })
-    // it.only('then example', function() {
-    //   cy.contains("logged in")
-    //   cy.get('button').then( buttons => {
-    //     console.log('number of buttons', buttons.length)
-    //     cy.wrap(buttons[0]).click()
-    //   })
-    // })
+    it.only("check the order of blogs",function(){
+      cy.contains("logged in")
+      cy.contains('create new blog').click()
+      cy.get('.title').type('my blog one')
+      cy.get('.author').type('this is me:liang')
+      cy.get('#url').type('www.baidu.com')
+      cy.contains("create")
+      cy.get('#create').then(($create) => {
+        cy.wrap($create).click()
+      })
+      cy.contains('my blog one')
+
+      cy.get('#view').should('be.visible').contains('view').then(($view) => {
+        cy.wait(1000)
+        $view.click()
+      })
+      cy.get('#likes').should('have.text', 'likes: 0')
+      cy.get('#like').click()
+      cy.get('#likes').should('have.text', 'likes: 1') 
+
+      cy.contains('create new blog').click()
+      cy.get('.title').type('my blog two')
+      cy.get('.author').type('this is me:liang')
+      cy.get('#url').type('www.google.com')
+      cy.contains("create")
+      cy.get('#create').then(($create) => {
+        cy.wrap($create).click()
+      })
+      cy.contains('my blog two')
+
+      cy.get('#blog').eq(0).should('contain', 'my blog one')
+      // cy.get('#blog').eq(1).should('contain', 'my blog two') // why can't find sometimes???
+
+    })
 
     it('A blog can be created', function() {
       cy.contains("logged in")
       cy.contains('create new blog').click()
       cy.get('.title').type('my blog one')
       cy.get('.author').type('this is me:liang')
-      cy.get('.url').type('www.baidu.com')
+      cy.get('#url').type('www.baidu.com')
       cy.contains("create")
       cy.get('#create').then(($create) => {
         cy.wrap($create).click()
@@ -66,7 +93,7 @@ describe('Blog app', function() {
         cy.contains('create new blog').click()
         cy.get('.title').type('my blog one')
         cy.get('.author').type('this is me:liang')
-        cy.get('.url').type('www.baidu.com')
+        cy.get('#url').type('www.baidu.com')
         cy.contains("create")
         cy.get('#create').then(($create) => {
           cy.wrap($create).click()
@@ -90,7 +117,7 @@ describe('Blog app', function() {
         cy.contains('create new blog').click()
         cy.get('.title').type('my blog one')
         cy.get('.author').type('this is me:liang')
-        cy.get('.url').type('www.baidu.com')
+        cy.get('#url').type('www.baidu.com')
         cy.contains("create")
         cy.get('#create').then(($create) => {
           cy.wrap($create).click()
@@ -113,7 +140,7 @@ describe('Blog app', function() {
       })
 
     })
-  it.only("check that other users cannot delete the blog", function(){
+  it("check that other users cannot delete the blog", function(){
     const user={
       username:'liang2',
       password:'123456',
@@ -133,7 +160,7 @@ describe('Blog app', function() {
     cy.contains('create new blog').click()
     cy.get('.title').type('my blog one')
     cy.get('.author').type('this is me:liang')
-    cy.get('.url').type('www.baidu.com')
+    cy.get('#url').type('www.baidu.com')
     cy.contains("create")
     cy.get('#create').then(($create) => {
       cy.wrap($create).click()
@@ -164,5 +191,5 @@ describe('Blog app', function() {
     cy.get('#app').should('not.contain','remove')
     cy.get("#app").should('contain',"my blog one")
   })
-  })
+})
 // update 5.20 
