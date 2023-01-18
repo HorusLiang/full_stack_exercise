@@ -1,26 +1,25 @@
-import {createAnecdote} from '../reducers/anecdoteReducer'
+import {vote} from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import React from 'react'
 
 
 const AnecdoteList=()=>{
-    const anecdotes = useSelector(state => state)
-    const sortedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
+    const anecdotes = useSelector(state => state).anecdotes // could return multiple reduer state, name is refered to index
     const dispatch = useDispatch()
-    const vote = (id) => {
+    const voteFor = (id) => {
         console.log('vote', id)
-        dispatch({ type: 'VOTE', data: { id } })
-      }
+        dispatch(vote(id))
+    }
     return (
         <>
-            {sortedAnecdotes.map(anecdote =>
+            {anecdotes.map(anecdote =>
                 <div key={anecdote.id}>
                     <div>
                         {anecdote.content}
                     </div>
                     <div>
                         has {anecdote.votes}
-                        <button onClick={() => vote(anecdote.id)}>vote</button>
+                        <button onClick={() => voteFor(anecdote.id)}>vote</button>
                     </div>
                 </div>
             )}
