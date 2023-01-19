@@ -17,9 +17,13 @@ const AnecdoteList=()=>{
           }, 1000);
         
     }
+    const inputText=useSelector(state => state).filter
+    const filteredAnecdotes=anecdotes.filter(item=>{
+        return item.content.toLowerCase().includes(inputText.toLowerCase())
+    })
     return (
         <>
-            {anecdotes.map(anecdote =>
+            {filteredAnecdotes.map(anecdote =>
                 <div key={anecdote.id}>
                     <div>
                         {anecdote.content}
