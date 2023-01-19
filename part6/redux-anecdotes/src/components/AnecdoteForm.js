@@ -1,5 +1,6 @@
 import {createAnecdote} from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import React from 'react'
 import anecdoteService from '../services/anecdotes'
 
@@ -23,4 +24,5 @@ const AnecdoteForm= ()=>{
 
     )
 }
-export default AnecdoteForm
+const ConnectedAnecdoteForm = connect()(AnecdoteForm)
+export default ConnectedAnecdoteForm
