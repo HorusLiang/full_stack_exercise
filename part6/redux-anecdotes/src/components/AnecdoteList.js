@@ -3,18 +3,22 @@ import {changeNotification,hideNotification } from '../reducers/notificationRedu
 import { useSelector, useDispatch } from 'react-redux'
 import React from 'react'
 
-
+let timeoutId = null
 const AnecdoteList=()=>{
     const anecdotes = useSelector(state => state).anecdotes // could return multiple reduer state, name is refered to index
     const dispatch = useDispatch()
+    
     const voteFor = (id) => {
         console.log('vote', id)
         dispatch(vote(id))
         const contentToChange = anecdotes.find(n => n.id === id).content
         dispatch(changeNotification("your voted for '"+contentToChange+"'"))
-        setTimeout(() => {
+        
+        clearTimeout(timeoutId)
+        console.log(timeoutId)
+        timeoutId=setTimeout(() => {
             dispatch(hideNotification());
-          }, 1000);
+          }, 5000);
         
     }
     const inputText=useSelector(state => state).filter
