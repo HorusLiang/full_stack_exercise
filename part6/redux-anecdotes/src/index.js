@@ -5,12 +5,14 @@ import { Provider } from 'react-redux'
 import App from './App'
 import anecdoteReducer from './reducers/anecdoteReducer'
 import { configureStore } from '@reduxjs/toolkit'
+import notificationReduer from './reducers/notificationReduer'
 
 
 // const store = createStore(reducer)
 const store = configureStore({
   reducer: {
     anecdotes: anecdoteReducer,
+    notification: notificationReduer,
   }
 })
 
