@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import App from './App'
 import anecdoteReducer from './reducers/anecdoteReducer'
 import { configureStore } from '@reduxjs/toolkit'
-import notificationReduer from './reducers/notificationReduer'
+import notificationReduer from './reducers/notificationReducer'
 
 
 // const store = createStore(reducer)
