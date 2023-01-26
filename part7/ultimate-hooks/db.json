@@ -1,0 +1,109 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are great",
+      "id": 1
+    },
+    {
+      "content": "the best featrure ever <3",
+      "id": 2
+    },
+    {
+      "content": "hi?",
+      "id": 3
+    },
+    {
+      "content": "hi?",
+      "id": 4
+    },
+    {
+      "content": "hi?da",
+      "id": 5
+    },
+    {
+      "content": "dsa",
+      "id": 6
+    },
+    {
+      "content": "dsa",
+      "id": 7
+    },
+    {
+      "content": "d",
+      "id": 8
+    },
+    {
+      "content": "ddas",
+      "id": 9
+    },
+    {
+      "content": "ddas",
+      "id": 10
+    },
+    {
+      "content": "ddas",
+      "id": 11
+    },
+    {
+      "content": "ddas",
+      "id": 12
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "kaltsoon",
+      "number": "045-2323456",
+      "id": 2
+    },
+    {
+      "name": "name",
+      "number": "number",
+      "id": 3
+    },
+    {
+      "name": "name",
+      "number": "number",
+      "id": 4
+    },
+    {
+      "name": "name",
+      "number": "number",
+      "id": 5
+    },
+    {
+      "name": "name",
+      "number": "number",
+      "id": 6
+    },
+    {
+      "name": "ads",
+      "number": "ads",
+      "id": 7
+    },
+    {
+      "name": "hi",
+      "number": "d",
+      "id": 8
+    },
+    {
+      "name": "dsa",
+      "number": "sda",
+      "id": 9
+    },
+    {
+      "name": "dsa",
+      "number": "sda",
+      "id": 10
+    },
+    {
+      "name": "dsa",
+      "number": "sda",
+      "id": 11
+    }
+  ]
+}
