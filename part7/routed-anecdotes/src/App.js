@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import {useField} from './hooks/index'
 
 import {
   BrowserRouter as Router,
@@ -56,17 +57,18 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+
+  const contentHook=useField("text")
+  const authorHook=useField("text")
+  const infoHook=useField("text")
 
   let navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content:contentHook.value,
+      author:authorHook.value,
+      info:infoHook.value,
       votes: 0
     })
     navigate("/")
@@ -78,15 +80,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...contentHook} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...authorHook} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input  {...infoHook} />
         </div>
         <button type='submit'>create</button>
       </form>
