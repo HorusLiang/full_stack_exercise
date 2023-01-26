@@ -73,6 +73,13 @@ const CreateNew = (props) => {
     })
     navigate("/")
   }
+  const reset=(e)=>{
+    e.preventDefault()
+    contentHook.clear()
+    authorHook.clear()
+    infoHook.clear()
+  }
+  
 
   return (
     <div>
@@ -80,17 +87,18 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...contentHook} />
+          <input type={contentHook.type} value={contentHook.value} onChange={contentHook.onChange} />
         </div>
         <div>
           author
-          <input {...authorHook} />
+          <input type={authorHook.type} value={authorHook.value} onChange={authorHook.onChange} />
         </div>
         <div>
           url for more info
-          <input  {...infoHook} />
+          <input  type={infoHook.type} value={infoHook.value} onChange={infoHook.onChange} />
         </div>
-        <button type='submit'>create</button>
+        <button type='submit'>create</button> 
+        <button onClick={reset} type='button'>reset</button>
       </form>
     </div>
   )
