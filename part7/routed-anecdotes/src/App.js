@@ -78,7 +78,7 @@ const CreateNew = (props) => {
     contentHook.clear()
     authorHook.clear()
     infoHook.clear()
-  }
+  }   
   
 
   return (
@@ -189,3 +189,4 @@ const App = () => {
 }
 
 export default App
+// with anecdotes and hooks complete, 7.6
