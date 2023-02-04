@@ -5,6 +5,11 @@ import blogService from './services/blogs'
 import Notification from './components/Notification'
 import Blog from './components/Blog'
 import CreateForm from './components/CreateForm'
+
+import { useSelector } from 'react-redux';
+import messReducer from './reducer/messReducer'
+import { createStore } from 'redux'
+const store = createStore(messReducer)
 const App = () => {
 
   const [username, setUsername] = useState('') 
@@ -123,6 +128,10 @@ const App = () => {
       </div>
     )
   }
+  const setTMess = message => {
+    store.dispatch({ type: 'SET_ERROR_MESSAGE', payload: message });
+  };
+  
   const handleCreate= async (blogObject)=>{
     console.log(blogObject)
     const blog={
@@ -135,6 +144,7 @@ const App = () => {
     setTitle('')
     setAuthor('')
     setUrl('')
+    setTMess("a new blog "+blog.title+ "by "+blog.author+" added")
     setErrorMessage("a new blog "+blog.title+ "by "+blog.author+" added")
     setTimeout(() => {
       setErrorMessage(null)
@@ -148,9 +158,10 @@ const App = () => {
     setUsername('')
     setPassword('')
   }
+  
   return (
     <div>
-      <Notification message={errorMessage} />
+      <Notification message={store.getState().errorMessage} />
       {user === null ?
         loginForm() :
         <div id='app'>

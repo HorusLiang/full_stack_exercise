@@ -14,7 +14,7 @@ const CreateForm=(
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
     const addNewBlog = (event) => {
-      // event.preventDefault()
+      event.preventDefault()
       handleCreate({
         title,
         author,
