@@ -60,9 +60,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong username or password')
+      setTMess('Wrong username or password')
       setTimeout(() => {
-        setErrorMessage(null)
+        setTMess(null)
       }, 5000)
     }
   }
@@ -145,9 +145,8 @@ const App = () => {
     setAuthor('')
     setUrl('')
     setTMess("a new blog "+blog.title+ "by "+blog.author+" added")
-    setErrorMessage("a new blog "+blog.title+ "by "+blog.author+" added")
     setTimeout(() => {
-      setErrorMessage(null)
+      setTMess(null)
     }, 5000)
   }
 
